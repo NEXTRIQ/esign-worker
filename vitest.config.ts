@@ -6,6 +6,8 @@ export default defineWorkersConfig(async () => {
   return {
     test: {
       setupFiles: ["./test/setup/apply-migrations.ts"],
+      // The log-only mailer reports every email; that is noise in test output.
+      onConsoleLog: (log) => !log.includes('"event":"email.log_only"'),
       poolOptions: {
         workers: {
           singleWorker: true,
