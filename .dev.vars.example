@@ -1,0 +1,11 @@
+# Copy to .dev.vars for `wrangler dev`. Never commit the real file.
+# Generate values with: openssl rand -base64 48
+
+# Bearer token for the admin API (min. 32 characters).
+ADMIN_TOKEN=replace-with-a-long-random-admin-token-value
+
+# Server-side secret for CSRF tokens and IP hashing (min. 32 characters).
+APP_SECRET=replace-with-a-long-random-application-secret
+
+# Only needed when EMAIL_PROVIDER=http.
+# EMAIL_API_KEY=

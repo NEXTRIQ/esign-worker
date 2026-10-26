@@ -1,0 +1,49 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "esign-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-03-01",
+
+  // Invocation logs record the request URL, and signing URLs contain the
+  // token. Keep them off; the Worker's own logs never include tokens.
+  "observability": { "enabled": true, "logs": { "invocation_logs": false } },
+
+  // Create the database in the EU before deploying:
+  //   npx wrangler d1 create esign --jurisdiction eu
+  // and paste the returned database_id below. (Use --location weur for a
+  // location hint only, if your account cannot use jurisdictions.)
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "esign",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations",
+    },
+  ],
+
+  // Create the bucket with EU data residency:
+  //   npx wrangler r2 bucket create esign-documents --jurisdiction eu
+  // The jurisdiction must match the one the bucket was created with.
+  "r2_buckets": [
+    {
+      "binding": "DOCUMENTS",
+      "bucket_name": "esign-documents",
+      "jurisdiction": "eu",
+    },
+  ],
+
+  // Non-secret settings. Secrets (ADMIN_TOKEN, APP_SECRET, EMAIL_API_KEY) are
+  // set with `wrangler secret put` and, for local dev, in .dev.vars.
+  "vars": {
+    "PUBLIC_BASE_URL": "http://localhost:8787",
+    "ORG_NAME": "Example Organisation",
+    "MAIL_FROM": "Example Organisation <signing@example.com>",
+    "OWNER_EMAIL": "owner@example.com",
+    "EMAIL_PROVIDER": "log",
+    "EMAIL_API_URL": "https://api.resend.com/emails",
+    "DEFAULT_EXPIRY_DAYS": "14",
+    "MAX_EXPIRY_DAYS": "60",
+    "DOWNLOAD_DAYS": "30",
+    "MAX_PDF_BYTES": "10485760",
+  },
+}

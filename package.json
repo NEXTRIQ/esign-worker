@@ -1,0 +1,40 @@
+{
+  "name": "esign-worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Self-hosted e-signing service on Cloudflare Workers, D1 and R2.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply esign --local",
+    "db:migrate:remote": "wrangler d1 migrations apply esign --remote",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm test"
+  },
+  "dependencies": {
+    "hono": "4.11.10",
+    "pdf-lib": "1.17.1",
+    "zod": "4.1.13"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "0.12.21",
+    "@cloudflare/workers-types": "4.20260310.1",
+    "@eslint/js": "10.0.1",
+    "eslint": "10.2.1",
+    "prettier": "3.6.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.59.0",
+    "vitest": "3.2.4",
+    "wrangler": "4.72.0"
+  }
+}
